@@ -1,5 +1,6 @@
 ## NEXT
 
+* Adds support to get all cookies on iOS and Android. See `WebViewCookieManager.getAllCookies`.
 * Updates minimum supported SDK version to Flutter 3.16/Dart 3.2.
 
 ## 2.10.0
