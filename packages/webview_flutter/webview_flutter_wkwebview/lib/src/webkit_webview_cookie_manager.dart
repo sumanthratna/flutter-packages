@@ -5,6 +5,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:webview_flutter_platform_interface/webview_flutter_platform_interface.dart';
 
+import 'common/web_kit.g.dart'
+    show
+        NSHttpCookieData,
+        NSHttpCookiePropertyKeyEnum,
+        NSHttpCookiePropertyKeyEnumData;
 import 'foundation/foundation.dart';
 import 'web_kit/web_kit.dart';
 import 'webkit_proxy.dart';
@@ -76,6 +81,44 @@ class WebKitWebViewCookieManager extends PlatformWebViewCookieManager {
         },
       ),
     );
+  }
+
+  bool _doesCookieDomainMatchUrl(String cookieDomain, String url) {
+    final Uri parsedUrl = Uri.parse(url);
+    final String urlDomain = parsedUrl.host;
+
+    // See [RFC 6265](https://datatracker.ietf.org/doc/html/rfc6265.html) for more detail.
+    final String normalizedCookieDomain =
+        cookieDomain.startsWith('.') ? cookieDomain.substring(1) : cookieDomain;
+
+    return urlDomain == normalizedCookieDomain ||
+        urlDomain.endsWith('.$normalizedCookieDomain');
+  }
+
+  @override
+  Future<List<WebViewCookie>> getCookies(String url) async {
+    final List<NSHttpCookieData> cookies =
+        await _webkitParams._websiteDataStore.httpCookieStore.getAllCookies();
+
+    final List<WebViewCookie> filteredCookies = cookies
+        .map((NSHttpCookieData cookieData) {
+          final Map<NSHttpCookiePropertyKeyEnum, Object?> properties =
+              Map<NSHttpCookiePropertyKeyEnum, Object?>.fromIterables(
+            cookieData.propertyKeys.map(
+                (NSHttpCookiePropertyKeyEnumData? enumData) => enumData!.value),
+            cookieData.propertyValues,
+          );
+          return WebViewCookie(
+            name: properties[NSHttpCookiePropertyKeyEnum.name]! as String,
+            value: properties[NSHttpCookiePropertyKeyEnum.value]! as String,
+            domain: properties[NSHttpCookiePropertyKeyEnum.domain]! as String,
+            path: properties[NSHttpCookiePropertyKeyEnum.path]! as String,
+          );
+        })
+        .where((WebViewCookie cookie) =>
+            _doesCookieDomainMatchUrl(cookie.domain, url))
+        .toList(growable: false);
+    return filteredCookies;
   }
 
   bool _isValidPath(String path) {

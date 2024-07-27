@@ -43,4 +43,17 @@
                                             completion(nil);
                                           }];
 }
+
+- (void)getAllCookiesForStoreWithIdentifier:(NSInteger)identifier
+                                 completion:(nonnull void (^)(NSArray<FWFNSHttpCookieData *> *_Nullable,
+                                                    FlutterError *_Nullable))completion {
+  [[self HTTPCookieStoreForIdentifier:identifier]
+      getAllCookies:^(NSArray<NSHTTPCookie *> *_Nullable cookieArray) {
+        NSMutableArray<FWFNSHttpCookieData *> *cookieDatas = [NSMutableArray array];
+        for (NSHTTPCookie *cookie in cookieArray) {
+          [cookieDatas addObject:FWFNSHttpCookieDataFromNativeNSHTTPCookie(cookie)];
+        }
+        completion(cookieDatas, nil);
+      }];
+}
 @end

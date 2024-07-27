@@ -509,6 +509,15 @@ class WKHttpCookieStoreHostApiImpl extends WKHttpCookieStoreHostApi {
       cookie.toNSHttpCookieData(),
     );
   }
+
+  /// Calls [getAllCookies] with the ids of the provided object instances.
+  Future<List<NSHttpCookieData>> getAllCookiesForInstances(
+    WKHttpCookieStore instance,
+  ) async {
+    final List<NSHttpCookieData?> cookies =
+        await getAllCookies(instanceManager.getIdentifier(instance)!);
+    return cookies.cast<NSHttpCookieData>();
+  }
 }
 
 /// Host api implementation for [WKUserContentController].

@@ -43,6 +43,48 @@ extern NSHTTPCookie *_Nullable FWFNativeNSHTTPCookieFromCookieData(FWFNSHttpCook
   return [NSHTTPCookie cookieWithProperties:properties];
 }
 
+FWFNSHttpCookieData *FWFNSHttpCookieDataFromNativeNSHTTPCookie(NSHTTPCookie *cookie) {
+  NSMutableArray<FWFNSHttpCookiePropertyKeyEnumData *> *propertyKeys = [NSMutableArray array];
+  NSMutableArray<NSString *> *propertyValues = [NSMutableArray array];
+
+  if (cookie.name) {
+    [propertyKeys addObject:[FWFNSHttpCookiePropertyKeyEnumData makeWithValue:FWFNSHttpCookiePropertyKeyEnumName]];
+    [propertyValues addObject:cookie.name];
+  }
+  if (cookie.value) {
+    [propertyKeys addObject:[FWFNSHttpCookiePropertyKeyEnumData makeWithValue:FWFNSHttpCookiePropertyKeyEnumValue]];
+    [propertyValues addObject:cookie.value];
+  }
+  if (cookie.domain) {
+    [propertyKeys addObject:[FWFNSHttpCookiePropertyKeyEnumData makeWithValue:FWFNSHttpCookiePropertyKeyEnumDomain]];
+    [propertyValues addObject:cookie.domain];
+  }
+  if (cookie.path) {
+    [propertyKeys addObject:[FWFNSHttpCookiePropertyKeyEnumData makeWithValue:FWFNSHttpCookiePropertyKeyEnumPath]];
+    [propertyValues addObject:cookie.path];
+  }
+  if (cookie.expiresDate) {
+    [propertyKeys addObject:[FWFNSHttpCookiePropertyKeyEnumData makeWithValue:FWFNSHttpCookiePropertyKeyEnumExpires]];
+    [propertyValues addObject:[NSString stringWithFormat:@"%@", cookie.expiresDate]];
+  }
+  if (cookie.isSecure) {
+    [propertyKeys addObject:[FWFNSHttpCookiePropertyKeyEnumData makeWithValue:FWFNSHttpCookiePropertyKeyEnumSecure]];
+    [propertyValues addObject:@"TRUE"];
+  }
+  if (cookie.isHTTPOnly) {
+    [propertyKeys addObject:[FWFNSHttpCookiePropertyKeyEnumData makeWithValue:FWFNSHttpCookiePropertyKeyEnumDiscard]];
+    [propertyValues addObject:@"TRUE"];
+  }
+  if (@available(iOS 13.0, *)) {
+    if (cookie.sameSitePolicy) {
+      [propertyKeys addObject:[FWFNSHttpCookiePropertyKeyEnumData makeWithValue:FWFNSHttpCookiePropertyKeyEnumSameSitePolicy]];
+      [propertyValues addObject:cookie.sameSitePolicy];
+    }
+  }
+
+  return [FWFNSHttpCookieData makeWithPropertyKeys:propertyKeys propertyValues:propertyValues];
+}
+
 NSKeyValueObservingOptions FWFNativeNSKeyValueObservingOptionsFromEnumData(
     FWFNSKeyValueObservingOptionsEnumData *data) {
   switch (data.value) {

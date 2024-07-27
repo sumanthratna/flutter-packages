@@ -896,6 +896,10 @@ abstract class WKHttpCookieStoreHostApi {
   @ObjCSelector('setCookieForStoreWithIdentifier:cookie:')
   @async
   void setCookie(int identifier, NSHttpCookieData cookie);
+
+  @ObjCSelector('getAllCookiesForStoreWithIdentifier:')
+  @async
+  List<NSHttpCookieData> getAllCookies(int identifier);
 }
 
 /// Host API for `NSUrl`.
