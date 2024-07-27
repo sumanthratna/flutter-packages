@@ -74,11 +74,6 @@ class WebViewCookieManager {
   /// implementation.
   WebViewCookieManager.fromPlatform(this.platform);
 
-  Future<String> getCookies(String url) {
-    throw UnimplementedError(
-        'getCookies is not implemented on the current platform');
-  }
-
   /// Implementation of [PlatformWebViewCookieManager] for the current platform.
   final PlatformWebViewCookieManager platform;
 
