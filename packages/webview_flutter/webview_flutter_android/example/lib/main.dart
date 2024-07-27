@@ -221,7 +221,8 @@ Page resource error:
       )
       ..loadRequest(
         LoadRequestParams(
-          uri: Uri.parse('https://flutter.dev'),
+          uri: Uri.parse(
+              'https://httpbin.org/response-headers?set-cookie=hellyeah=whoah;httponly'),
         ),
       );
   }
@@ -464,21 +465,29 @@ class SampleMenu extends StatelessWidget {
     );
   }
 
-  Future<void> _onListCookies(BuildContext context) async {
-    final String cookies = await webViewController
-        .runJavaScriptReturningResult('document.cookie') as String;
-    if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            const Text('Cookies:'),
-            _getCookieList(cookies),
-          ],
-        ),
-      ));
-    }
+  Future<List<WebViewCookie>> _onListCookies(BuildContext context) async {
+    // final String cookies = await webViewController
+    //     .runJavaScriptReturningResult('document.cookie') as String;
+    // if (context.mounted) {
+    //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    //     content: Column(
+    //       mainAxisAlignment: MainAxisAlignment.end,
+    //       mainAxisSize: MainAxisSize.min,
+    //       children: <Widget>[
+    //         const Text('Cookies:'),
+    //         _getCookieList(cookies),
+    //       ],
+    //     ),
+    //   ));
+    // }
+
+    print("sdfsdfsadfasfd");
+    final nwqCookies = await cookieManager
+        .getCookies(await webViewController.currentUrl() ?? '');
+    print('nwqCookies $nwqCookies ${nwqCookies.runtimeType}');
+    print('nwqCookies ${nwqCookies[0].name} ${nwqCookies[0].value}');
+
+    return nwqCookies;
   }
 
   Future<void> _onAddToCache(BuildContext context) async {

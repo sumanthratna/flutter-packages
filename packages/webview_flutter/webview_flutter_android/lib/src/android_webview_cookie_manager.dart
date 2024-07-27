@@ -47,6 +47,28 @@ class AndroidWebViewCookieManager extends PlatformWebViewCookieManager {
   final CookieManager _cookieManager;
 
   @override
+  Future<List<WebViewCookie>> getCookies(String url) async {
+    final String cookieString = await _cookieManager.getCookies(url);
+
+    final List<String> cookiePairs = cookieString.split(';');
+
+    // Convert each cookie into a WebViewCookie object
+    final List<WebViewCookie> cookies = cookiePairs.map((cookiePair) {
+      final List<String> keyValue = cookiePair.split('=');
+      final String name = keyValue[0].trim();
+      final String value = keyValue.length > 1 ? keyValue[1].trim() : '';
+
+      return WebViewCookie(
+        name: name,
+        value: value,
+        domain: url,
+      );
+    }).toList(growable: false);
+
+    return cookies;
+  }
+
+  @override
   Future<bool> clearCookies() {
     return _cookieManager.removeAllCookies();
   }

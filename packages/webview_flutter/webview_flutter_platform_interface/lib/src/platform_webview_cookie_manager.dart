@@ -60,4 +60,9 @@ abstract class PlatformWebViewCookieManager extends PlatformInterface {
     throw UnimplementedError(
         'setCookie is not implemented on the current platform');
   }
+
+  Future<List<WebViewCookie>> getCookies(String url) {
+    throw UnimplementedError(
+        'setCookie is not implemented on the current platform');
+  }
 }

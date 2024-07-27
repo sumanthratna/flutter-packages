@@ -184,6 +184,8 @@ abstract class CookieManagerHostApi {
     int webViewIdentifier,
     bool accept,
   );
+
+  String getCookies(int identifier, String url);
 }
 
 @HostApi(dartHostTestHandler: 'TestWebViewHostApi')
