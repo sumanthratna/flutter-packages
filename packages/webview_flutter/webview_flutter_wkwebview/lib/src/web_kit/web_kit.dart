@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 import '../common/instance_manager.dart';
+import '../common/web_kit.g.dart' show NSHttpCookieData;
 import '../foundation/foundation.dart';
 import '../ui_kit/ui_kit.dart';
 import 'web_kit_api_impls.dart';
@@ -435,6 +436,11 @@ class WKHttpCookieStore extends NSObject {
   /// Adds a cookie to the cookie store.
   Future<void> setCookie(NSHttpCookie cookie) {
     return _httpCookieStoreApi.setCookieForInstances(this, cookie);
+  }
+
+  /// Gets all cookies from the cookie store.
+  Future<List<NSHttpCookieData>> getAllCookies() {
+    return _httpCookieStoreApi.getAllCookiesForInstances(this);
   }
 
   @override

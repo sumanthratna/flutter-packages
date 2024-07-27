@@ -22,6 +22,13 @@ extern NSURLRequest *_Nullable FWFNativeNSURLRequestFromRequestData(FWFNSUrlRequ
 /// @return An NSHTTPCookie or nil if data could not be converted.
 extern NSHTTPCookie *_Nullable FWFNativeNSHTTPCookieFromCookieData(FWFNSHttpCookieData *data);
 
+/// Converts an NSHTTPCookie to an FWFNSHttpCookieData.
+///
+/// @param cookie The NSHTTPCookie object to convert.
+///
+/// @return An FWFNSHttpCookieData.
+extern FWFNSHttpCookieData *FWFNSHttpCookieDataFromNativeNSHTTPCookie(NSHTTPCookie *cookie);
+
 /// Converts an FWFNSKeyValueObservingOptionsEnumData to an NSKeyValueObservingOptions.
 ///
 /// @param data The data object containing information to create an NSKeyValueObservingOptions.

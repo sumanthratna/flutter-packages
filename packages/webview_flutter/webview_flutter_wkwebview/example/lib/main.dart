@@ -472,8 +472,8 @@ class SampleMenu extends StatelessWidget {
   }
 
   Future<void> _onListCookies(BuildContext context) async {
-    final String cookies = await webViewController
-        .runJavaScriptReturningResult('document.cookie') as String;
+    final List<WebViewCookie> cookies = await cookieManager
+        .getCookies(await webViewController.currentUrl() ?? '');
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Column(
@@ -605,13 +605,27 @@ class SampleMenu extends StatelessWidget {
     return webViewController.loadHtmlString(kAlertTestPage);
   }
 
-  Widget _getCookieList(String cookies) {
-    if (cookies == '""') {
+  Widget _getCookieList(List<WebViewCookie> cookies) {
+    if (cookies.isEmpty) {
       return Container();
     }
-    final List<String> cookieList = cookies.split(';');
-    final Iterable<Text> cookieWidgets =
-        cookieList.map((String cookie) => Text(cookie));
+    final Iterable<RichText> cookieWidgets = cookies.map(
+      (WebViewCookie cookie) => RichText(
+        text: TextSpan(
+          children: <InlineSpan>[
+            TextSpan(
+              text: cookie.name,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            const TextSpan(text: ' = '),
+            TextSpan(
+              text: cookie.value,
+              style: TextStyle(color: Colors.grey.shade400),
+            ),
+          ],
+        ),
+      ),
+    );
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       mainAxisSize: MainAxisSize.min,
