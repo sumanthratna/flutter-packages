@@ -1509,6 +1509,16 @@ class CookieManagerHostApiImpl extends CookieManagerHostApi {
     );
   }
 
+  Future<String> getCookieFromInstances(
+    CookieManager instance,
+    String url,
+  ) {
+    return getCookies(
+      instanceManager.getIdentifier(instance)!,
+      url,
+    );
+  }
+
   /// Helper method to convert instance ids to objects.
   Future<bool> removeAllCookiesFromInstances(CookieManager instance) {
     return removeAllCookies(instanceManager.getIdentifier(instance)!);

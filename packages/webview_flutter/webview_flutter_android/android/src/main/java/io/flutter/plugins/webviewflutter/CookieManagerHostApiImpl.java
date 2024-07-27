@@ -12,6 +12,11 @@ import androidx.annotation.VisibleForTesting;
 import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugins.webviewflutter.GeneratedAndroidWebView.CookieManagerHostApi;
 import java.util.Objects;
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
+import android.util.Log;
+import java.lang.reflect.Method;
 
 /**
  * Host API implementation for `CookieManager`.
@@ -124,6 +129,12 @@ public class CookieManagerHostApiImpl implements CookieManagerHostApi {
       cookieManager.removeAllCookie();
     }
     return hasCookies;
+  }  
+  
+  @Override
+  public String getCookies(@NonNull Long identifier, @NonNull String url) {
+    String cookieString = getCookieManagerInstance(identifier).getCookie(url);
+    return cookieString;
   }
 
   @NonNull

@@ -517,6 +517,10 @@ class CookieManager extends JavaObject {
     return _cookieManagerApi.setCookieFromInstances(this, url, value);
   }
 
+  Future<String> getCookies(String url) {
+    return _cookieManagerApi.getCookieFromInstances(this, url);
+  }
+
   /// Removes all cookies.
   ///
   /// The returned future resolves to true if any cookies were removed.
