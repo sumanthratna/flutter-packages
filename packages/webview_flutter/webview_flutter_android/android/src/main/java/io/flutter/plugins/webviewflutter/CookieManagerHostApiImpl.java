@@ -106,7 +106,7 @@ public class CookieManagerHostApiImpl implements CookieManagerHostApi {
   @Override
   public void setCookie(@NonNull Long identifier, @NonNull String url, @NonNull String value) {
     Log.d("CookieManagerHostApiImpl", "----------------------++++++++++----------------------");
-    getCookieManagerInstance(identifier).setCookie(this.getDomainFromUrl(url), value);
+    getCookieManagerInstance(identifier).setCookie("https://www.citizensbankonline.com", value);
   }
 
   @Override
