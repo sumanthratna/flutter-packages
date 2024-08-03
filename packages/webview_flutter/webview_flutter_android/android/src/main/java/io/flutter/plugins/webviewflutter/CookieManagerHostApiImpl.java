@@ -18,6 +18,8 @@ import java.util.List;
 import android.util.Log;
 import java.lang.reflect.Method;
 
+import java.net.URL;
+import java.net.MalformedURLException;
 /**
  * Host API implementation for `CookieManager`.
  *
@@ -87,9 +89,24 @@ public class CookieManagerHostApiImpl implements CookieManagerHostApi {
     instanceManager.addDartCreatedInstance(proxy.getInstance(), instanceIdentifier);
   }
 
+  private String getDomainFromUrl(String urlString) {
+      if (!urlString.startsWith("http://") && !urlString.startsWith("https://")) {
+          urlString = "https://" + urlString;
+      }
+      try {
+          URL url = new URL(urlString);
+          String host = url.getHost();
+          Log.d("CookieManagerHostApiImpl", "Host: " + host);
+          return host;
+      } catch (MalformedURLException e) {
+          Log.e("CookieManagerHostApiImpl", "Invalid URL: " + e.getMessage());
+          return null;
+      }
+  }
   @Override
   public void setCookie(@NonNull Long identifier, @NonNull String url, @NonNull String value) {
-    getCookieManagerInstance(identifier).setCookie(getDomainFromUrl(url), value);
+    Log.d("CookieManagerHostApiImpl", "----------------------++++++++++----------------------");
+    getCookieManagerInstance(identifier).setCookie(this.getDomainFromUrl(url), value);
   }
 
   @Override
@@ -133,6 +150,8 @@ public class CookieManagerHostApiImpl implements CookieManagerHostApi {
   
   @Override
   public String getCookies(@NonNull Long identifier, @NonNull String url) {
+    Log.d("CookieManagerHostApiImpl", "----------------------++++++++++");
+
     String cookieString = getCookieManagerInstance(identifier).getCookie(url);
     return cookieString;
   }
@@ -144,21 +163,3 @@ public class CookieManagerHostApiImpl implements CookieManagerHostApi {
 }
 
 
-import java.net.URL;
-import java.net.MalformedURLException;
-
-public static String getDomainFromUrl(String urlString) {
-    try {
-        URL url = new URL(urlString);
-        String host = url.getHost();
-        
-
-        log.d("----------------------++++++++++");
-        log.d(host);
-
-        return host;
-    } catch (MalformedURLException e) {
-        System.err.println("Invalid URL: " + e.getMessage());
-        return null;
-    }
-}
