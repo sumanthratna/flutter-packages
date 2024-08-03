@@ -154,7 +154,7 @@ public class CookieManagerHostApiImpl implements CookieManagerHostApi {
     Log.d("CookieManagerHostApiImpl", "----------------------++++++++++");
     getCookieManagerInstance(identifier).flush();
     String cookieString = getCookieManagerInstance(identifier).getCookie(url);
-    return cookieString;
+    return "cookieString=sadfsadf";
   }
 
   @NonNull
