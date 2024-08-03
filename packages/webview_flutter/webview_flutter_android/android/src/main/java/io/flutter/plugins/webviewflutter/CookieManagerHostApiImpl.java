@@ -152,13 +152,7 @@ public static String getDomainFromUrl(String urlString) {
         URL url = new URL(urlString);
         String host = url.getHost();
         
-        // Remove "www." if present
-        if (host.startsWith("www.")) {
-            log.d("Removing www.++++++++++++=");
-            log.d(host.substring(4));
 
-            return host.substring(4);
-        }
         log.d("----------------------++++++++++");
         log.d(host);
 
