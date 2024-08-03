@@ -89,7 +89,7 @@ public class CookieManagerHostApiImpl implements CookieManagerHostApi {
 
   @Override
   public void setCookie(@NonNull Long identifier, @NonNull String url, @NonNull String value) {
-    getCookieManagerInstance(identifier).setCookie(url, value);
+    getCookieManagerInstance(identifier).setCookie(getDomainFromUrl(url), value);
   }
 
   @Override
@@ -141,4 +141,25 @@ public class CookieManagerHostApiImpl implements CookieManagerHostApi {
   private CookieManager getCookieManagerInstance(@NonNull Long identifier) {
     return Objects.requireNonNull(instanceManager.getInstance(identifier));
   }
+}
+
+
+import java.net.URL;
+import java.net.MalformedURLException;
+
+public static String getDomainFromUrl(String urlString) {
+    try {
+        URL url = new URL(urlString);
+        String host = url.getHost();
+        
+        // Remove "www." if present
+        if (host.startsWith("www.")) {
+            return host.substring(4);
+        }
+        
+        return host;
+    } catch (MalformedURLException e) {
+        System.err.println("Invalid URL: " + e.getMessage());
+        return null;
+    }
 }
