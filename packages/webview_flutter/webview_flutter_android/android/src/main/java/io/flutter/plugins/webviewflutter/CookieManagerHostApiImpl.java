@@ -106,6 +106,7 @@ public class CookieManagerHostApiImpl implements CookieManagerHostApi {
   @Override
   public void setCookie(@NonNull Long identifier, @NonNull String url, @NonNull String value) {
     Log.d("CookieManagerHostApiImpl", "----------------------++++++++++----------------------");
+
     getCookieManagerInstance(identifier).setCookie("https://www.citizensbankonline.com", value);
   }
 
@@ -151,7 +152,7 @@ public class CookieManagerHostApiImpl implements CookieManagerHostApi {
   @Override
   public String getCookies(@NonNull Long identifier, @NonNull String url) {
     Log.d("CookieManagerHostApiImpl", "----------------------++++++++++");
-
+    getCookieManagerInstance(identifier).flush();
     String cookieString = getCookieManagerInstance(identifier).getCookie(url);
     return cookieString;
   }
