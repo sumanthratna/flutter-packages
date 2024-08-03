@@ -154,9 +154,14 @@ public static String getDomainFromUrl(String urlString) {
         
         // Remove "www." if present
         if (host.startsWith("www.")) {
+            log.d("Removing www.++++++++++++=");
+            log.d(host.substring(4));
+
             return host.substring(4);
         }
-        
+        log.d("----------------------++++++++++");
+        log.d(host);
+
         return host;
     } catch (MalformedURLException e) {
         System.err.println("Invalid URL: " + e.getMessage());
