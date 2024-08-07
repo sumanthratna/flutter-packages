@@ -133,7 +133,6 @@ public class CookieManagerHostApiImpl implements CookieManagerHostApi {
   
   @Override
   public String getCookies(@NonNull Long identifier, @NonNull String url) {
-    getCookieManagerInstance(identifier).flush();
     String cookieString = getCookieManagerInstance(identifier).getCookie(url);
     return cookieString;
   }
